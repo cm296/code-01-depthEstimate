@@ -29,7 +29,7 @@ from tqdm import tqdm
 
 
 
-def test_simple(model_name,output_directory,no_cuda,object2vec):
+def test_simple(model_name,output_directory,no_cuda):
     """Function to predict for a single image or folder of images
     """
     assert model_name is not None, \
@@ -81,10 +81,10 @@ def test_simple(model_name,output_directory,no_cuda,object2vec):
 
     # print("-> Predicting on {:d} test images".format(len(paths)))
 
-    if  object2vec:
-    	Depth_Ade_object2vec(output_directory,feed_height,feed_width,device,encoder,depth_decoder)
-    else:
-    	Depth_Ade_20k(output_directory,feed_height,feed_width,device,encoder,depth_decoder)
+    # if  object2vec:
+    	# Depth_Ade_object2vec(output_directory,feed_height,feed_width,device,encoder,depth_decoder)
+    # else:
+    Depth_Ade_20k(output_directory,feed_height,feed_width,device,encoder,depth_decoder)
         # for idx, image_path in enumerate(paths):
 
             # if image_path.endswith("_disp.jpg"):
@@ -103,17 +103,17 @@ def Depth_Ade_20k(output_directory,feed_height,feed_width,device,encoder,depth_d
 
 
 
-def Depth_Ade_object2vec(output_directory,feed_height,feed_width,device,encoder,depth_decoder):
-	#Load images
-    Ade_subset = pd.read_csv("../Ade20K_labels/Ade20K_labels_marcc.txt")
-    conditions = np.unique(Ade_subset.object)
-    condition_features = {}
+# def Depth_Ade_object2vec(output_directory,feed_height,feed_width,device,encoder,depth_decoder):
+# 	#Load images
+#     Ade_subset = pd.read_csv("../Ade20K_labels/Ade20K_labels_marcc.txt")
+#     conditions = np.unique(Ade_subset.object)
+#     condition_features = {}
 
-    # PREDICTING ON EACH IMAGE IN TURN
-    with torch.no_grad():
-        for c in tqdm(conditions):
-            stimuli = Ade_subset.loc[Ade_subset.object ==c,'filepath']+'/'+Ade_subset.loc[Ade_subset.object ==c,'filename']
-            [MakeDepthEst(image_path+'.jpg',output_directory,feed_height,feed_width,device,encoder,depth_decoder) for image_path in stimuli]
+#     # PREDICTING ON EACH IMAGE IN TURN
+#     with torch.no_grad():
+#         for c in tqdm(conditions):
+#             stimuli = Ade_subset.loc[Ade_subset.object ==c,'filepath']+'/'+Ade_subset.loc[Ade_subset.object ==c,'filename']
+#             [MakeDepthEst(image_path+'.jpg',output_directory,feed_height,feed_width,device,encoder,depth_decoder) for image_path in stimuli]
 
 
 
